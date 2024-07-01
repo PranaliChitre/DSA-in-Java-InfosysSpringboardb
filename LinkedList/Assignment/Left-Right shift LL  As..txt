@@ -24,7 +24,6 @@ class Node {
     }
 }
 
-
 class LinkedList {
 
     private Node head;
@@ -38,6 +37,16 @@ class LinkedList {
         return this.tail;
     }
 
+    public int size() {
+        int size = 0;
+        Node current = head;
+        while (current != null) {
+            size++;
+            current = current.getNext();
+        }
+        return size;
+    }
+
     public void addAtEnd(String data) {
         Node node = new Node(data);
 
@@ -45,7 +54,6 @@ class LinkedList {
             this.head = this.tail = node;
         } else {
             this.tail.setNext(node);
-
             this.tail = node;
         }
     }
@@ -55,15 +63,13 @@ class LinkedList {
 
         if (this.head == null) {
             this.head = this.tail = node;
-        }
-
-        else {
+        } else {
             node.setNext(this.head);
             this.head = node;
         }
     }
 
-      public void display() {
+    public void display() {
         Node temp = this.head;
 
         while (temp != null) {
@@ -123,8 +129,8 @@ class LinkedList {
                 Node temp = this.head;
                 while (temp != null) {
                     if (temp.getNext() == node) {
-                    nodeBefore = temp;
-                    break;
+                        nodeBefore = temp;
+                        break;
                     }
                     temp = temp.getNext();
                 }
@@ -138,7 +144,6 @@ class LinkedList {
         }
     }
 }
-
 
 class Tester {
 
@@ -171,12 +176,69 @@ class Tester {
     }
 
     public static void shiftListLeft(LinkedList linkedList, int n) {
-        //Implement your code here
+        if (linkedList.getHead() == null || n <= 0) {
+            return; // No action needed if list is empty or shift count is zero or negative
+        }
+        
+        // Adjust n to avoid unnecessary full loops
+        n = n % linkedList.size(); // In case n is greater than list size
+
+        if (n == 0) {
+            return; // No change needed if n is a multiple of list size
+        }
+
+        Node current = linkedList.getHead();
+        int count = 1;
+
+        // Traverse to the nth node
+        while (count < n && current != null) {
+            current = current.getNext();
+            count++;
+        }
+
+        if (current == null) {
+            return; // No change needed if n is greater than list size
+        }
+
+        // Current is at the nth node
+        Node newHead = current.getNext();
+        linkedList.getTail().setNext(linkedList.getHead());
+        linkedList.head = newHead;
+        current.setNext(null);
+        linkedList.tail = current;
     }
 
     public static void shiftListRight(LinkedList linkedList, int n) {
-        //Implement your code here   
+        if (linkedList.getHead() == null || n <= 0) {
+            return; // No action needed if list is empty or shift count is zero or negative
+        }
+        
+        // Adjust n to avoid unnecessary full loops
+        n = n % linkedList.size(); // In case n is greater than list size
 
+        if (n == 0) {
+            return; // No change needed if n is a multiple of list size
+        }
+
+        // Find the new head and new tail positions
+        Node current = linkedList.getHead();
+        int count = 1;
+
+        // Traverse to the (size - n)th node
+        while (count < linkedList.size() - n && current != null) {
+            current = current.getNext();
+            count++;
+        }
+
+        if (current == null) {
+            return; // No change needed if n is greater than list size
+        }
+
+        // Current is at the (size - n)th node
+        Node newHead = current.getNext();
+        current.setNext(null);
+        linkedList.getTail().setNext(linkedList.getHead());
+        linkedList.head = newHead;
+        linkedList.tail = current;
     }
 }
-
