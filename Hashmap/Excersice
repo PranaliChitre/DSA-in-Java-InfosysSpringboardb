@@ -1,0 +1,62 @@
+import java.util.HashMap;
+import java.util.Map;
+
+class Student {
+	
+    public static Map<String, Double> findMaxMinScorers(Map<String, Double> studentMarks) {
+        if (studentMarks == null || studentMarks.isEmpty()) {
+            throw new IllegalArgumentException("Input map cannot be null or empty.");
+        }
+        
+        // Initialize variables to track max and min scores
+        double maxScore = Double.MIN_VALUE;
+        double minScore = Double.MAX_VALUE;
+        String maxScorer = null;
+        String minScorer = null;
+        
+        // Iterate through the map to find max and min scores
+        for (Map.Entry<String, Double> entry : studentMarks.entrySet()) {
+            String student = entry.getKey();
+            double marks = entry.getValue();
+            
+            // Update max score
+            if (marks > maxScore) {
+                maxScore = marks;
+                maxScorer = student;
+            }
+            
+            // Update min score
+            if (marks < minScore) {
+                minScore = marks;
+                minScorer = student;
+            }
+        }
+        
+        // Prepare the result map
+        Map<String, Double> result = new HashMap<>();
+        result.put("Top Scorer: " + maxScorer, maxScore);
+        result.put("Low Scorer: " + minScorer, minScore);
+        
+        return result;
+    }
+}
+
+class Tester {
+
+	public static void main(String args[]) {
+		Map<String, Double> studentMarks = new HashMap<String, Double>();
+	    studentMarks.put("Lily", 90.0);
+		studentMarks.put("Robin", 68.0);
+		studentMarks.put("Marshall", 76.5);
+		studentMarks.put("Neil", 67.0);
+		studentMarks.put("Ted", 92.0);
+		
+		Map<String, Double> maxMinScorers = Student.findMaxMinScorers(studentMarks);
+		
+		System.out.println("Details of Top Scorers & Low Scorers\n====================================");
+		for (Map.Entry<String, Double> entry : maxMinScorers.entrySet()) {
+			System.out.println(entry.getKey()+" -- "+entry.getValue());
+		}
+		
+	}
+}
