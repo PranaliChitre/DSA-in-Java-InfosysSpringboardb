@@ -1,0 +1,35 @@
+import java.util.List;
+
+class Tester {
+
+    static int count = 0;
+
+    public static void findWordSegments(List<String> wordsList, String inputString) {
+        findSegmentsRecursive(wordsList, inputString);
+    }
+
+    private static void findSegmentsRecursive(List<String> wordsList, String str) {
+        if (str.isEmpty()) {
+            // Base case: If the string is empty, increment the count of valid segments
+            count++;
+            return;
+        }
+
+        // Check prefixes of str
+        for (int i = 1; i <= str.length(); i++) {
+            String prefix = str.substring(0, i);
+            if (wordsList.contains(prefix)) {
+                // If prefix matches a word in wordsList, recurse on the remaining substring
+                findSegmentsRecursive(wordsList, str.substring(i));
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        List<String> wordsList = List.of("i", "like", "pizza", "li", "ke", "pi", "zza");
+        String inputString = "ilikepizza";
+
+        findWordSegments(wordsList, inputString);
+        System.out.println("Number of segments: " + count); // Output: Number of segments: 4
+    }
+}
