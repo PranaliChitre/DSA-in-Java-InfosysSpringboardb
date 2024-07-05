@@ -1,0 +1,52 @@
+class Tester {
+
+    public static int findMaxSum(int arr[], int low, int high) {
+        if (low == high) {
+            return arr[low]; // Base case: Only one element
+        }
+        
+        int mid = (low + high) / 2;
+        
+        // Recursively find maximum sum in left and right subarrays
+        int leftMax = findMaxSum(arr, low, mid);
+        int rightMax = findMaxSum(arr, mid + 1, high);
+        
+        // Find maximum sum in subarray that crosses the middle
+        int crossMax = findMaxCrossingSubarraySum(arr, low, mid, high);
+        
+        // Return the maximum of the three sums
+        return Math.max(Math.max(leftMax, rightMax), crossMax);
+    }
+
+    public static int findMaxCrossingSubarraySum(int arr[], int low, int mid, int high) {
+        // Calculate maximum sum of subarray that crosses the middle element
+        int leftSum = Integer.MIN_VALUE;
+        int sum = 0;
+        
+        // Calculate max sum of subarray starting from mid and going left
+        for (int i = mid; i >= low; i--) {
+            sum += arr[i];
+            if (sum > leftSum) {
+                leftSum = sum;
+            }
+        }
+        
+        // Calculate max sum of subarray starting from mid+1 and going right
+        int rightSum = Integer.MIN_VALUE;
+        sum = 0;
+        for (int i = mid + 1; i <= high; i++) {
+            sum += arr[i];
+            if (sum > rightSum) {
+                rightSum = sum;
+            }
+        }
+        
+        // Return the sum of the two parts
+        return leftSum + rightSum;
+    }
+
+    public static void main(String[] args) {
+        int arr[] = { -2, -5, 6, -2, -3, 1, 5, -6 };
+        System.out.println("Maximum sum: " + findMaxSum(arr, 0, arr.length - 1)); // Output: Maximum sum: 7
+    }
+}
